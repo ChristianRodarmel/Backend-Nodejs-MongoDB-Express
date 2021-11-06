@@ -10,13 +10,14 @@ const server = http.createServer((req, res) => {
     console.log(`Request for ${req.url} by method ${req.method}`);
 
     if (req.method === 'GET') {
-        let fileUrl = req.urlif;
-        if(fileUrl === '/') {
-            fileUrl = '/indeex.html';
+        let fileUrl = req.url;
+        if (fileUrl === '/') {
+            fileUrl = '/index.html';
         }
 
         const filePath = path.resolve('./public' + fileUrl);
         const fileExt = path.extname(filePath);
+
         if (fileExt === '.html') {
             fs.access(filePath, err => {
                 if (err) {
@@ -25,7 +26,7 @@ const server = http.createServer((req, res) => {
                     res.end(`<html><body><h1>Error 404: ${fileUrl} not found</h1></body></html>`);
                     return;
                 }
-                res.statusCode = 200
+                res.statusCode = 200;
                 res.setHeader('Content-Type', 'text/html');
 
                 fs.createReadStream(filePath).pipe(res);
